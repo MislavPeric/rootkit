@@ -1,4 +1,4 @@
-from ctypes import *
+from ctypes import byref, create_string_buffer, c_ulong, windll
 import pythoncom
 import pyWinhook as pyhook
 import pywintypes as pywin32
