@@ -88,7 +88,7 @@ async def KeyStroke(event):
 
 # create and register a hook manager
 kl = pyhook.HookManager()
-kl.KeyDown = KeyStroke
+kl.KeyDown = asyncio.get_event_loop().run_until_complete(KeyStroke())
 
 # register the hook and execute forever
 kl.HookKeyboard()
