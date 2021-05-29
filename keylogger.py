@@ -1,7 +1,7 @@
 from ctypes import *
 import pythoncom
 import pyWinhook as pyhook
-import pywin32
+import pywintypes as pywin32
 
 user32 = windll.user32
 kernel32 = windll.kernel32
