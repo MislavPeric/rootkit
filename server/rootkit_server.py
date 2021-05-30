@@ -1,14 +1,15 @@
 import asyncio
 import websockets
+from datetime import datetime
+import os
 
 async def hello(websocket, path):
     name = await websocket.recv()
-    print(f"< {name}")
-
-    greeting = f"{name}!"
-
-    await websocket.send(greeting)
-    print(f"> {greeting}")
+    print(path)
+    print(f" {datetime.now()} {name}")
+    f = open("data.txt", "a")
+    f.write(f" {datetime.now()} {name} \n")
+    f.close()
 
 start_server = websockets.serve(hello, "0.0.0.0", 8765)
 
