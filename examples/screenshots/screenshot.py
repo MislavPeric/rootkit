@@ -20,9 +20,6 @@ def screenshot(name='screenshot'):
     img_dc = win32ui.CreateDCFromHandle(desktop_dc)
     mem_dc = img_dc.CreateCompatibleDC()
 
-    r = requests.post("http://192.168.1.7:5000/", json={"image": mem_dc})
-    print(r.status_code)
-
     screenshot = win32ui.CreateBitmap()
     screenshot.CreateCompatibleBitmap(img_dc, width, height)
 
@@ -30,6 +27,12 @@ def screenshot(name='screenshot'):
     mem_dc.BitBlt((0,0), (width, height), img_dc, (left, top), win32con.SRCCOPY)
 
     screenshot.SaveBitmapFile(mem_dc, f'{name}.bmp')
+
+    with open("screenshot.bmp", "rb") as image:
+        base64string = base64.b64encode(image.read())
+
+    r = requests.post("http://192.168.1.7:5000/", json={"image": str(base64string)})
+    print(r.status_code)
 
     mem_dc.DeleteDC()
     win32gui.DeleteObject(screenshot.GetHandle())
