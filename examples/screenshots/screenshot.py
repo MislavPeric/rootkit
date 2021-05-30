@@ -29,9 +29,9 @@ def screenshot(name='screenshot'):
     screenshot.SaveBitmapFile(mem_dc, f'{name}.bmp')
 
     with open("screenshot.bmp", "rb") as image:
-        file = {"image", image}
+        file = {"image": image}
+        r = requests.post("http://192.168.1.7:5000/", files=file)
 
-    r = requests.post("http://192.168.1.7:5000/", json=file)
     print(r.status_code)
 
     mem_dc.DeleteDC()
