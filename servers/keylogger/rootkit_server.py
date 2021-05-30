@@ -1,7 +1,6 @@
 import asyncio
 import websockets
 from datetime import datetime
-import os
 
 async def hello(websocket, path):
     name = await websocket.recv()
