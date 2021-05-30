@@ -14,7 +14,7 @@ def write_memory(buf):
     length = len(buf)
 
     kernel32.VirtualAlloc.restype = ctypes.c_void_p
-    kernel32.RtlMoveMemoty.argtypes = (
+    kernel32.RtlMoveMemory.argtypes = (
         ctypes.c_void_p,
         ctypes.c_void_p,
         ctypes.c_size_t
